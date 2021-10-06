@@ -5,14 +5,22 @@
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>To Do List</title>
+
+    <link href="css/styles.css" rel="stylesheet">
 </head>
 <body>
+
+    <!-- display current date  -->
     <h1> <%= kindOfDay %> </h1>
 
+    <!-- display to do list items -->
     <ul>
-        <li>Buy food</li>
+        <% toDoList.forEach(listItem => {%> 
+            <li><%= listItem %> </li>
+        <% }); %> 
     </ul>
 
+    <!-- add item to do list -->
     <form action="/" method="POST">
         <input type="text" name="newItem">
         <button type="submit" name="button">Add</button>

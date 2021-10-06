@@ -2,10 +2,12 @@ const { urlencoded } = require('express');
 const express = require('express');
 
 const app = express();
-
 app.use(express.urlencoded({ extended: true }));
+app.use(express.static("public"));
 
 app.set('view engine', 'ejs');
+
+var items = [];
 
 app.get("/", function(req, res) {
 
@@ -19,24 +21,20 @@ app.get("/", function(req, res) {
     var day = date.toLocaleDateString("en-US", options);
 
     res.render("list", {
-        kindOfDay: day
+        kindOfDay: day,
+        toDoList: items
     });
 });
 
 app.post("/", function(req, res) {
 
-    console.log(req.body.newItem);
-    // var toDoList = [];
+    var item = req.body.newItem;
+    items.push(item)
 
-    // var newItem = req.body.newItem;
-    // toDoList.push(newItem);
+    res.redirect("/");
 
-    // res.render("list", {
-    //     toDos: toDoList,
-    //     kindOfDay: "hello"
-    // })
 })
 
 app.listen(3000, function() {
-    console.log('Server running on port 3000 at https://localhost:3000');
+    console.log('Server running on port 3000 at http://localhost:3000');
 });
