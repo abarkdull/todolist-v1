@@ -8,6 +8,7 @@ app.use(express.static("public"));
 app.set('view engine', 'ejs');
 
 var items = [];
+let workItems = [];
 
 app.get("/", function(req, res) {
 
@@ -21,18 +22,37 @@ app.get("/", function(req, res) {
     var day = date.toLocaleDateString("en-US", options);
 
     res.render("list", {
-        kindOfDay: day,
-        toDoList: items
+        listTitle: day,
+        newListItems: items
     });
+});
+
+app.get('/work', function(req, res) {
+    res.render("list", {
+        listTitle: "Work List",
+        newListItems: workItems
+    });
+});
+
+app.post('/work', function(req, res) {
+    let newItem = req.body.newItem;
+    workItems.push(newItem);
+    res.redirect('/work');
 });
 
 app.post("/", function(req, res) {
 
     var item = req.body.newItem;
-    items.push(item)
+
+    if (req.body.list === 'Work') {
+        workItems.push(item);
+        res.redirect('/work');
+    } else {
+        items.push(item);
+        res.redirect('/');
+    }
 
     res.redirect("/");
-
 })
 
 app.listen(3000, function() {
